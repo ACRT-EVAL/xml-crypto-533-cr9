@@ -154,6 +154,12 @@ module.exports = {
       "<x Id=\"\" id=\"\"></x>")
   },
 
+  "Exclusive canonicalization removes Comments": function (test) {
+    compare(test, 
+      "<x id=\"\" Id=\"\"><!-- Comment --></x>", 
+      "//*[local-name(.)='x']", 
+      "<x Id=\"\" id=\"\"></x>") 
+  },
 
   "Exclusive canonicalization works on xml with attributes with different namespace than element": function (test) {
     compare(test, 
@@ -210,6 +216,14 @@ module.exports = {
       "<child><inner>123</inner></child>")
   }, 
 
+  /* Uncomment this when this issue is fixed
+  "Exclusive canonicalization removal of whitespace between PITarget and its data": function (test) {
+    compare(test, 
+      "<root xmlns=\"\"><child><inner>123</inner></child></root><?pi-without-data   ?>", 
+      "//*[local-name(.)='child']", 
+      "<child><inner>123</inner></child><?pi-without-data?>")
+  },
+  */
 
   "Exclusive canonicalization with empty default namespace inside output nodes": function (test) {
     compare(test, 
@@ -225,13 +239,22 @@ module.exports = {
       "//*[local-name(.)='child']", 
       "<child><inner>123</inner></child>")
   },   
- 
+
+
+  /* Uncomment this when this issue is fixed
+  "The XML declaration and document type declaration (DTD) are removed, stylesheet retained": function (test) {
+    compare(test, 
+      "<?xml version=\"1.0\" encoding=\"utf-8\"?><?xml-stylesheet   href=\"doc.xsl\"   type=\"text/xsl\"   ?><root><child><inner>123</inner></child></root>", 
+      "//*[local-name(.)='child']", 
+      "<?xml-stylesheet   href=\"doc.xsl\"   type=\"text/xsl\"   ?><child><inner>123</inner></child>")
+  },   
+  */
 
   "Attribute value delimiters are set to quotation marks (double quotes)": function (test) {
     compare(test, 
-      "<root><child xmlns='ns'><inner attr='value'>123</inner></child></root>", 
+      "<root><child xmlns='ns'><inner attr='value'>123 </inner></child></root>", 
       "//*[local-name(.)='child']", 
-      "<child xmlns=\"ns\"><inner attr=\"value\">123</inner></child>")
+      "<child xmlns=\"ns\"><inner attr=\"value\">123 </inner></child>")
   },
 
  
